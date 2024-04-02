@@ -1,0 +1,153 @@
+#
+# Atajos de teclado independientes del gestor de ventanas
+#
+
+# Emulador de terminal
+super + Return
+    alacritty
+
+super + m
+    rofi -show drun
+
+super + n
+    brave
+
+Print
+    flameshot gui
+
+super + Print
+    flameshot launcher
+
+ctrl + alt + p
+    polybar-toggle
+
+super + shift + x
+    rofi -show power-menu -modi power-menu:rofi-power-menu
+
+# Control de volumen
+XF86AudioMute
+    pamixer -t
+
+XF86AudioLowerVolume
+    pamixer -d 5
+
+XF86AudioRaiseVolume
+    pamixer -i 5
+
+# Control de brillo
+XF86MonBrightnessDown
+    brightnessctl set 5%-
+
+XF86MonBrightnessUp
+    brightnessctl set +5%
+
+# Hacer que sxhkd recargue sus archivos de configuración:
+super + Escape
+    pkill -USR1 -x sxhkd
+
+
+#
+# Atajos de bspwm
+#
+
+# Salir/reiniciar bspwm
+super + alt + {q,r}
+    bspc {quit,wm -r}
+
+# Cerrar y matar
+super + {_,shift + }w
+    bspc node -{c,k}
+
+# Alternar entre el diseño en mosaico y monocle
+super + shift + m
+    bspc desktop -l next
+
+# Enviar el nodo más reciente marcado al nodo más reciente preseleccionado
+super + y
+    bspc node newest.marked.local -n newest.!automatic.local
+
+# Intercambiar el nodo actual y la ventana más grande
+super + g
+    bspc node -s biggest.window
+
+#
+# Estados/indicadores
+#
+
+# Establecer el estado de la ventana
+super + {t,shift + t,s,f}
+    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# Establecer las indicaciones del nodo
+super + ctrl + {m,x,y,z}
+    bspc node -g {marked,locked,sticky,private}
+
+#
+# Enfoque/intercambio
+#
+
+# Enfocar el nodo en la dirección dada
+super + {_,shift + }{Left,Down,Up,Right}
+    bspc node -{f,s} {west,south,north,east}
+
+# Enfocar el nodo para el salto de ruta dado
+super + {p,b,comma,period}
+    bspc node -f @{parent,brother,first,second}
+
+# Enfocar la ventana siguiente/anterior en el escritorio actual
+super + {_,shift + }c
+    bspc node -f {next,prev}.local.!hidden.window
+
+# Enfocar el escritorio siguiente/anterior en el monitor actual
+super + bracket{left,right}
+    bspc desktop -f {prev,next}.local
+
+# Enfocar el último nodo/escritorio
+super + {grave,Tab}
+    bspc {node,desktop} -f last
+
+# Enfocar el nodo/escritorio más antiguo o más nuevo en el historial de enfoque
+super + {o,i}
+    bspc wm -h off; \
+    bspc node {older,newer} -f; \
+    bspc wm -h on
+
+# Enfocar o enviar al escritorio dado
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+
+#
+# Preselección
+#
+
+# Preseleccionar la dirección
+super + ctrl + {Left,Down,Up,Right}
+    bspc node -p {west,south,north,east}
+
+# Preseleccionar la proporción
+super + ctrl + {1-9}
+    bspc node -o 0.{1-9}
+
+# Cancelar la preselección para el nodo enfocado
+super + ctrl + space
+    bspc node -p cancel
+
+# Cancelar la preselección para el escritorio enfocado
+super + ctrl + shift + space
+    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# Mover/ajustar tamaño
+#
+
+# Expandir una ventana moviendo uno de sus lados hacia afuera
+super + alt + {Left,Down,Up,Right}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Contraer una ventana moviendo uno de sus lados hacia adentro
+super + alt + shift + {Left,Down,Up,Right}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Mover una ventana flotante
+# alt + {Left,Down,Up,Right}
+#     bspc node -v {-20 0,0 20,0 -20,20 0}
